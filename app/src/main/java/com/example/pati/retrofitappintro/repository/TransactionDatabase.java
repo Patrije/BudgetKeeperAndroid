@@ -22,7 +22,7 @@ public abstract class TransactionDatabase extends RoomDatabase {
         if (INSTANCE == null) {
             synchronized (TransactionDatabase.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), TransactionDatabase.class, "transaction_database").build();
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), TransactionDatabase.class, "transaction_database").fallbackToDestructiveMigration().build();
                 }
             }
         }

@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/BudgetKeeperAndroid.iml" filepath="$PROJECT_DIR$/BudgetKeeperAndroid.iml" group="BudgetKeeperAndroid" />
+      <module fileurl="file://$PROJECT_DIR$/app/BudgetKeeperAndroid-app.iml" filepath="$PROJECT_DIR$/app/BudgetKeeperAndroid-app.iml" group="BudgetKeeperAndroid/app" />
       <module fileurl="file://$PROJECT_DIR$/RetroFitAppIntro.iml" filepath="$PROJECT_DIR$/RetroFitAppIntro.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

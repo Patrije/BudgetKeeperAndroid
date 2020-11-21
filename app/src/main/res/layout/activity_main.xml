@@ -60,10 +60,10 @@
     android:layout_below="@+id/bar_chart"
     android:layout_marginTop="30dp">
             <Button
-                android:id="@+id/ask_button"
+                android:id="@+id/scan_button"
                 android:layout_width="300dp"
                 android:layout_height="match_parent"
-                android:text="Ask for additional cash"
+                android:text="Scan receipt"
                 android:background="@drawable/rounded_shape"
                 style="@style/AppTheme.RoundedCornerMaterialButton"
                 android:layout_centerHorizontal="true"
@@ -73,7 +73,7 @@
                 android:layout_width="300dp"
                 android:layout_height="match_parent"
                 android:text="Raport expenditure"
-                android:layout_below="@+id/ask_button"
+                android:layout_below="@+id/scan_button"
                 android:background="@drawable/rounded_shape"
                 android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"

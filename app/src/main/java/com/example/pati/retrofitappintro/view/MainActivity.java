@@ -21,15 +21,18 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.gms.common.api.CommonStatusCodes;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int RC_OCR_CAPTURE = 9003;
 
     private TextView budget;
-    private Button askButton, expenseButton, incomeButton, historyButton;
+    private Button scanButton, expenseButton, incomeButton, historyButton;
     private TransactionViewModel transactionViewModel;
     private TransactionRepository transactionRepository;
     private Dialog dialog1, dialog2, dialog3;
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        askButton = (Button) findViewById(R.id.ask_button);
+        scanButton = (Button) findViewById(R.id.scan_button);
         historyButton = (Button) findViewById(R.id.history_button);
         budget = (TextView) findViewById(R.id.budget);
         expenseButton = (Button) findViewById(R.id.expense_button);
@@ -51,10 +54,14 @@ public class MainActivity extends AppCompatActivity {
         dialog1 = new Dialog(this, transactionViewModel, "income");
         dialog2 = new Dialog(this, transactionViewModel, "expenses");
         dialog3 = new Dialog(this, transactionViewModel, "request");
-        askButton.setOnClickListener(new View.OnClickListener() {
+        scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog3.showDialog();
+                Intent intent = new Intent(getApplicationContext(), OcrCaptureActivity.class);
+                intent.putExtra(OcrCaptureActivity.AutoFocus, true);
+
+                startActivityForResult(intent, RC_OCR_CAPTURE);
+
             }
 
         });
@@ -193,5 +200,31 @@ public class MainActivity extends AppCompatActivity {
     public void updateEntries(ArrayList<Entry> newEntries) {
         this.entries = newEntries;
         lineChart.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == RC_OCR_CAPTURE) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    String text = data.getStringExtra(OcrCaptureActivity.TextBlockObject);
+                    Log.i("value", text);
+                    transactionViewModel.insert(new Transaction(Double.parseDouble(text), TimeHelper.getNow().getTimeInMillis(), transactionViewModel.getFromSharedPref(), "N/A", 0));
+
+//                    statusMessage.setText(R.string.ocr_success);
+//                    textValue.setText(text);
+//                    Log.d(TAG, "Text read: " + text);
+                } else {
+//                    statusMessage.setText(R.string.ocr_failure);
+//                    Log.d(TAG, "No Text captured, intent data is null");
+                }
+            } else {
+//                statusMessage.setText(String.format(getString(R.string.ocr_error),
+//                        CommonStatusCodes.getStatusCodeString(resultCode)));
+            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }
