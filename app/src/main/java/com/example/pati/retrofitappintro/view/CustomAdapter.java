@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.pati.retrofitappintro.R;
-import com.example.pati.retrofitappintro.model.Transaction;
+import com.example.pati.retrofitappintro.model.TransactionDto;
 import com.example.pati.retrofitappintro.util.TimeHelper;
 
 import java.util.Calendar;
@@ -22,19 +22,19 @@ import java.util.List;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
     private Context context;
-    private List<Transaction> transactionList;
+    private List<TransactionDto> transactionList;
 
-    public CustomAdapter(final Context context, final List<Transaction> transactionList) {
+    public CustomAdapter(final Context context, final List<TransactionDto> transactionList) {
         this.transactionList = transactionList;
         this.context = context;
     }
 
-    public void updateEvents(final List<Transaction> transactions) {
+    public void updateEvents(final List<TransactionDto> transactions) {
         transactionList = transactions;
         notifyDataSetChanged();
     }
 
-    public void setData(List<Transaction> newData) {
+    public void setData(List<TransactionDto> newData) {
         this.transactionList = newData;
         notifyDataSetChanged();
     }
@@ -56,14 +56,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        Transaction transaction = transactionList.get(position);
+        TransactionDto transaction = transactionList.get(position);
 
         Calendar calendar = TimeHelper.getNow();
         calendar.setTimeInMillis(transaction.getDateOfTransaction());
         String dateOfTransaction = calendar.get(Calendar.DAY_OF_MONTH) + "-" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR);
         holder.textViewValue.setText(String.valueOf(transaction.getValue()));
-        holder.textViewCategory.setText(transaction.getCategory());
         holder.textViewDate.setText(dateOfTransaction);
+         holder.textViewCategory.setText(transaction.getCategoryName());
     }
 
     @Override

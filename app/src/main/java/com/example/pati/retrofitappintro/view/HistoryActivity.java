@@ -13,7 +13,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.pati.retrofitappintro.R;
+import com.example.pati.retrofitappintro.converter.TransactionDsToTransactionDtoConverter;
 import com.example.pati.retrofitappintro.model.Transaction;
+import com.example.pati.retrofitappintro.model.TransactionDto;
 import com.example.pati.retrofitappintro.service.TransactionService;
 
 import java.util.ArrayList;
@@ -21,11 +23,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import lombok.SneakyThrows;
+
 public class HistoryActivity extends AppCompatActivity {
 
     private TransactionViewModel transactionViewModel;
     private RecyclerView recyclerView;
     private CustomAdapter customAdapter;
+    private TransactionDsToTransactionDtoConverter converter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +41,8 @@ public class HistoryActivity extends AppCompatActivity {
                 DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(itemDecoration);
         transactionViewModel = ViewModelProviders.of(this).get(TransactionViewModel.class);
-        customAdapter = new CustomAdapter(getApplicationContext(), new ArrayList<Transaction>());
+        customAdapter = new CustomAdapter(getApplicationContext(), new ArrayList<TransactionDto>());
+        converter = new TransactionDsToTransactionDtoConverter(getApplication());
         recyclerView.setAdapter(customAdapter);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -49,11 +55,13 @@ public class HistoryActivity extends AppCompatActivity {
             startService(intentService);
         });
         try {
-            transactionViewModel.getAllTransactionsWithoutRequest().observe(this, new Observer<List<Transaction>>() {
+            transactionViewModel.getAllTransactions().observe(this, new Observer<List<Transaction>>() {
+                @SneakyThrows
                 @Override
                 public void onChanged(@Nullable List<Transaction> transactions) {
                    Collections.reverse(transactions);
-                    customAdapter.setData(transactions);
+
+                    customAdapter.setData(converter.convertDsToDtos(transactions));
                 }
             });
         } catch (ExecutionException e) {

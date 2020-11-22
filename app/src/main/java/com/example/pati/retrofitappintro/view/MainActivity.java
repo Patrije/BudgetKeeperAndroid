@@ -11,8 +11,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.pati.retrofitappintro.R;
+import com.example.pati.retrofitappintro.model.Category;
 import com.example.pati.retrofitappintro.model.Transaction;
+import com.example.pati.retrofitappintro.repository.CategoryRepository;
 import com.example.pati.retrofitappintro.repository.TransactionRepository;
 import com.example.pati.retrofitappintro.util.TimeHelper;
 import com.github.mikephil.charting.charts.LineChart;
@@ -27,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
     private static final int RC_OCR_CAPTURE = 9003;
@@ -35,9 +40,11 @@ public class MainActivity extends AppCompatActivity {
     private Button scanButton, expenseButton, incomeButton, historyButton;
     private TransactionViewModel transactionViewModel;
     private TransactionRepository transactionRepository;
+    private CategoryRepository categoryRepository;
     private Dialog dialog1, dialog2, dialog3;
     private LineChart lineChart;
     private ArrayList<Entry> entries, negEntries;
+    private List<Category> categoriesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +58,11 @@ public class MainActivity extends AppCompatActivity {
         lineChart = (LineChart) findViewById(R.id.bar_chart);
         transactionViewModel = ViewModelProviders.of(this).get(TransactionViewModel.class);
         transactionRepository = new TransactionRepository(getApplication());
+        categoryRepository = new CategoryRepository(getApplication());
+//        categoryRepository.insertCategory(new Category("Food"));
+//        categoryRepository.insertCategory(new Category("Play"));
+//        categoryRepository.insertCategory(new Category("Home"));
+//        categoryRepository.insertCategory(new Category("Other"));
         dialog1 = new Dialog(this, transactionViewModel, "income");
         dialog2 = new Dialog(this, transactionViewModel, "expenses");
         dialog3 = new Dialog(this, transactionViewModel, "request");
@@ -68,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         expenseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog2.showDialog();
+                dialog2.showDialog(categoriesList);
             }
 
         });
@@ -76,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         incomeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog1.showDialog();
+                dialog1.showDialog(categoriesList);
             }
 
         });
@@ -93,40 +105,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(@Nullable List<Transaction> transactions) {
                     try {
-                        budget.setText(transactionRepository.getTransactionSum().toString()+"  PLN");
-//                        String string = "";
-//                        entries.removeAll(entries);
-//                        negEntries.removeAll(negEntries);
-//                        for (int i = 0; i < transactions.size(); i++) {
-//                            if(transactionRepository.getAllTransactionASC().get(i).getValue()>=0) {
-//                                entries.add(new Entry((float) i, (float) transactionRepository.getAllTransactionASC().get(i).getValue()));
-//                            } else {
-//                                negEntries.add(new Entry((float) i, Math.abs((float) transactionRepository.getAllTransactionASC().get(i).getValue())));
-//                            }
-//                        }
-//
-//                        LineDataSet set = new LineDataSet(entries, "Incomes");
-//                        LineDataSet negSet = new LineDataSet(negEntries, "Expenses");
-//                        negSet.setColor(Color.RED);
-//                        negSet.setLineWidth(3.0f);
-//                        negSet.setDrawFilled(true);
-//                        negSet.setFillColor(Color.RED);
-//                        negSet.setFillAlpha(210);
-//                        set.setColor(Color.GREEN);
-//                        set.setLineWidth(3.0f);
-//                        set.setDrawFilled(true);
-//                        set.setFillColor(Color.GREEN);
-//                        set.setFillAlpha(190);
-//                        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-//                        dataSets.add(set);
-//                        dataSets.add(negSet);
-//                        LineData data = new LineData(dataSets);
-//                        lineChart.setData(data);
-//                        lineChart.notifyDataSetChanged();
-//                        lineChart.invalidate();
-                    }// catch (NegativeArraySizeException e) {
-                        //Log.i("Status", e.getMessage());
-                   // }
+                        budget.setText(categoryRepository.getCategoryNameById(1)+"  PLN");
+                    }
                     catch (ExecutionException e) {
                         e.printStackTrace();
                     } catch (InterruptedException e) {
@@ -143,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         try {
-            transactionViewModel.getAllTransactionsWithoutRequest().observe(this, new Observer<List<Transaction>>() {
+            transactionViewModel.getAllTransactions().observe(this, new Observer<List<Transaction>>() {
                 @Override
                 public void onChanged(@Nullable List<Transaction> transactions) {
                     try {
@@ -195,6 +175,14 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
             startActivity(intent);
         });
+
+        transactionViewModel.getAllCategories().observe(this, new Observer<List<Category>>() {
+            @Override
+            public void onChanged(@Nullable List<Category> categories) {
+                categoriesList = new ArrayList<>();
+                categoriesList.addAll(categories);
+            }
+        });
     }
 
     public void updateEntries(ArrayList<Entry> newEntries) {
@@ -209,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
                 if (data != null) {
                     String text = data.getStringExtra(OcrCaptureActivity.TextBlockObject);
                     Log.i("value", text);
-                    transactionViewModel.insert(new Transaction(Double.parseDouble(text), TimeHelper.getNow().getTimeInMillis(), transactionViewModel.getFromSharedPref(), "N/A", 0));
+                    transactionViewModel.insert(new Transaction(Double.parseDouble(text), TimeHelper.getNow().getTimeInMillis(),1));
 
 //                    statusMessage.setText(R.string.ocr_success);
 //                    textValue.setText(text);

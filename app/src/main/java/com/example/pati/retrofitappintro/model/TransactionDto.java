@@ -1,29 +1,21 @@
 package com.example.pati.retrofitappintro.model;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
 
-import lombok.Data;
+public class TransactionDto {
 
-/**
- * Created by Pati on 11.11.2018.
- */
-
-@Data
-@Entity
-public class Transaction {
-
-    @PrimaryKey(autoGenerate = true)
     private long transactionId;
     private double value;
     private Long dateOfTransaction;
-    private long categoryId;
+    private String categoryName;
 
-    public Transaction( double value, Long dateOfTransaction, long categoryId) {
+    public TransactionDto() {
+    }
+
+    public TransactionDto(long transactionId, double value, Long dateOfTransaction, String categoryName) {
+        this.transactionId = transactionId;
         this.value = value;
         this.dateOfTransaction = dateOfTransaction;
-        this.categoryId = categoryId;
+        this.categoryName = categoryName;
     }
 
     public long getTransactionId() {
@@ -50,11 +42,11 @@ public class Transaction {
         this.dateOfTransaction = dateOfTransaction;
     }
 
-    public long getCategoryId() {
-        return categoryId;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCategoryId(long categoryId) {
-        this.categoryId = categoryId;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

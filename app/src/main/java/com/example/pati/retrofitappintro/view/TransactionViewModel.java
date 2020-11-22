@@ -8,7 +8,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.pati.retrofitappintro.model.Category;
 import com.example.pati.retrofitappintro.model.Transaction;
+import com.example.pati.retrofitappintro.repository.CategoryRepository;
 import com.example.pati.retrofitappintro.repository.TransactionRepository;
 
 import java.util.List;
@@ -22,18 +24,20 @@ public class TransactionViewModel extends AndroidViewModel {
 
     private static final String LOGIN_KEY="BudgetKeeperKey";
     private TransactionRepository transactionRepository;
+    private CategoryRepository categoryRepository;
     private Double transactionSum;
     private LiveData<List<Transaction>> transactionList;
-    private LiveData<List<Transaction>> transactionListWithoutRequest;
     private SharedPreferences sharedPreferences;
+    private LiveData<List<Category>> categoriesList;
 
     public TransactionViewModel(Application application) throws ExecutionException, InterruptedException {
         super(application);
 
         transactionRepository = new TransactionRepository(application);
+        categoryRepository = new CategoryRepository(application);
         transactionSum = transactionRepository.getTransactionSum();
         transactionList = transactionRepository.getAllTransactions();
-        transactionListWithoutRequest= transactionRepository.getAllTransactionsList();
+        categoriesList = categoryRepository.getAllCategories();
         sharedPreferences = application.getSharedPreferences("login_pref",Context.MODE_PRIVATE);
     }
 
@@ -68,12 +72,13 @@ return sharedPreferences.getString(LOGIN_KEY,"");
         return transactionList;
     }
 
-    public LiveData<List<Transaction>> getAllTransactionsWithoutRequest() throws ExecutionException, InterruptedException {
-        if (transactionListWithoutRequest == null) {
-            transactionListWithoutRequest = transactionRepository.getAllTransactionsList();
+    public LiveData<List<Category>> getAllCategories() {
+        if(categoriesList == null) {
+            categoriesList = categoryRepository.getAllCategories();
         }
-        return transactionListWithoutRequest;
+        return categoriesList;
     }
+
 
 
     public void deleteTransactions() {

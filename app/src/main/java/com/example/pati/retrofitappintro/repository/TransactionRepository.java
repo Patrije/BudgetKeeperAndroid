@@ -31,9 +31,6 @@ public class TransactionRepository {
         return new getAllTransactionAsc(transactionDao).execute().get();
     }
 
-    public LiveData<List<Transaction>> getAllTransactionsList() throws ExecutionException, InterruptedException {
-        return transactionDao.getAllTransactionsWithoutRequests();
-    }
 
     public void insertTransaction(Transaction transaction) {
         new insertAsyncTask(transactionDao).execute(transaction);

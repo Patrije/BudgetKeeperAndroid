@@ -60,5 +60,8 @@ dependencies {
     androidTestImplementation "android.arch.persistence.room:testing:1.1.1"
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
+    compileOnly "org.projectlombok:lombok:1.18.16"
+    annotationProcessor "org.projectlombok:lombok:1.18.16"
+
 
 }
