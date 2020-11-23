@@ -27,6 +27,7 @@ public class TransactionViewModel extends AndroidViewModel {
     private CategoryRepository categoryRepository;
     private Double transactionSum;
     private LiveData<List<Transaction>> transactionList;
+    private LiveData<List<Transaction>> transactionListGroupedByDays;
     private SharedPreferences sharedPreferences;
     private LiveData<List<Category>> categoriesList;
 
@@ -37,6 +38,7 @@ public class TransactionViewModel extends AndroidViewModel {
         categoryRepository = new CategoryRepository(application);
         transactionSum = transactionRepository.getTransactionSum();
         transactionList = transactionRepository.getAllTransactions();
+        transactionListGroupedByDays = transactionRepository.getAllTransactionsGroupedByDays();
         categoriesList = categoryRepository.getAllCategories();
         sharedPreferences = application.getSharedPreferences("login_pref",Context.MODE_PRIVATE);
     }
@@ -70,6 +72,13 @@ return sharedPreferences.getString(LOGIN_KEY,"");
             transactionList = transactionRepository.getAllTransactions();
         }
         return transactionList;
+    }
+
+    public LiveData<List<Transaction>> getAllTransactionsGroupedByDays() throws ExecutionException, InterruptedException {
+        if (transactionListGroupedByDays == null) {
+            transactionListGroupedByDays = transactionRepository.getAllTransactionsGroupedByDays();
+        }
+        return transactionListGroupedByDays;
     }
 
     public LiveData<List<Category>> getAllCategories() {

@@ -44,6 +44,10 @@ public class TransactionRepository {
         return transactionDao.getAllTransactions();
     }
 
+    public LiveData<List<Transaction>> getAllTransactionsGroupedByDays() throws ExecutionException, InterruptedException {
+        return transactionDao.getAllTransactionsGroupedByDays();
+    }
+
     private static class insertAsyncTask extends AsyncTask<Transaction, Void, Void> {
 
         private TransactionDao mAsyncTaskDao;

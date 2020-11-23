@@ -1,17 +1,19 @@
 package com.example.pati.retrofitappintro.model;
 
 
+import java.util.Date;
+
 public class TransactionDto {
 
     private long transactionId;
     private double value;
-    private Long dateOfTransaction;
+    private String dateOfTransaction;
     private String categoryName;
 
     public TransactionDto() {
     }
 
-    public TransactionDto(long transactionId, double value, Long dateOfTransaction, String categoryName) {
+    public TransactionDto(long transactionId, double value, String dateOfTransaction, String categoryName) {
         this.transactionId = transactionId;
         this.value = value;
         this.dateOfTransaction = dateOfTransaction;
@@ -34,11 +36,11 @@ public class TransactionDto {
         this.value = value;
     }
 
-    public Long getDateOfTransaction() {
+    public String getDateOfTransaction() {
         return dateOfTransaction;
     }
 
-    public void setDateOfTransaction(Long dateOfTransaction) {
+    public void setDateOfTransaction(String dateOfTransaction) {
         this.dateOfTransaction = dateOfTransaction;
     }
 

@@ -4,7 +4,10 @@ package com.example.pati.retrofitappintro.util;
  * Created by Pati on 12.12.2018.
  */
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class TimeHelper {
 
@@ -18,6 +21,18 @@ public class TimeHelper {
 
     public static Calendar getNow() {
         return calendarFactory.getNewInstance();
+    }
+
+    public static String getActualDate(){
+        String pattern = "yyyy-MM-dd";
+        DateFormat dateFormat = new SimpleDateFormat(pattern);
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return dateFormat.format(date);
     }
 
     public static Calendar getCalendar(int year, int month, int day, int hour, int minute) {

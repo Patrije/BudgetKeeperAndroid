@@ -43,9 +43,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.login_layout);
         ((App) getApplication()).getNetComponent().inject(this);
         transactionViewModel = ViewModelProviders.of(this).get(TransactionViewModel.class);
-        signButton = (Button) findViewById(R.id.signButton);
-        loginEdit = (EditText) findViewById(R.id.login);
-        passEdit = (EditText) findViewById(R.id.pass);
+        signButton = findViewById(R.id.signButton);
+        loginEdit = findViewById(R.id.login);
+        passEdit = findViewById(R.id.pass);
         loginRestApi = retrofit.create(LoginRestApi.class);
         signButton.setOnClickListener(new View.OnClickListener() {
             @Override

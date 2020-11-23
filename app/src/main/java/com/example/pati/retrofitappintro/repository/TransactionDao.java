@@ -27,6 +27,9 @@ public interface TransactionDao {
     @Query("select transactionId,value,categoryId,dateOfTransaction from `Transaction` order by dateOfTransaction desc")
     LiveData<List<Transaction>> getAllTransactions();
 
+    @Query("select transactionId, sum(value) as value,categoryId, dateOfTransaction from `Transaction` group by strftime('%Y-%m', dateOfTransaction)  order by dateOfTransaction")
+    LiveData<List<Transaction>> getAllTransactionsGroupedByDays();
+
     @Query("select transactionId, value, categoryId, dateOfTransaction from `Transaction` order by dateOfTransaction asc")
     List<Transaction> getAllTransactionASC();
 }

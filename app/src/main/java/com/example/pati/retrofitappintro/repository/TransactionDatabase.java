@@ -12,7 +12,7 @@ import com.example.pati.retrofitappintro.model.Transaction;
  * Created by Pati on 11.11.2018.
  */
 
-@Database(entities = {Transaction.class}, version = 2)
+@Database(entities = {Transaction.class}, version = 11)
 public abstract class TransactionDatabase extends RoomDatabase {
     public abstract TransactionDao transactionDao();
 

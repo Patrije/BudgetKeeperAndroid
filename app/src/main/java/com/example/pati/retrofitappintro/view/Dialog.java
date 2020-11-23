@@ -46,7 +46,8 @@ public class Dialog {
         this.operationType = operationType;
     }
 
-    public void showDialog(List<Category> categories) {
+    public void showDialog(List<Category> categories, Double amount) {
+
         final android.app.Dialog dialog = new android.app.Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
@@ -57,6 +58,8 @@ public class Dialog {
         List<Category> spiennerArray = new ArrayList<>();
 //        spiennerArray.addAll(categories);
         spinner = dialog.findViewById(R.id.category);
+
+
         ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(context, android.R.layout.simple_spinner_item , spiennerArray){
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -85,6 +88,9 @@ public class Dialog {
                 return label;
             }
         };
+        if(amount!= null){
+            userInput.setText(amount.toString());
+        }
         adapter.addAll(categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -115,7 +121,7 @@ public class Dialog {
             if (operationType.equals("expenses")) {
                 value = -value;
             }
-                transactionViewModel.insert(new Transaction(value, TimeHelper.getNow().getTimeInMillis(), categoryId));
+                transactionViewModel.insert(new Transaction(value, TimeHelper.getActualDate(), categoryId));
         dialog.dismiss();
     }
     private void onDismissed(final DialogInterface dialog) {

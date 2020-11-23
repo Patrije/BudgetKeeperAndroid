@@ -7,7 +7,7 @@
 
     <EditText
         android:id="@+id/value"
-        android:hint="Enter value"
+        android:hint="Enter amount"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"

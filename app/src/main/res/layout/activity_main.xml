@@ -33,7 +33,7 @@
                 android:id="@+id/budget"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Your budget "
+                android:text="00.00"
                 android:textSize="30sp"
                 android:textColor="#FFFFFF"
                 android:layout_centerHorizontal="true"
@@ -44,14 +44,15 @@
                 android:background="@drawable/rounded_shape"
                 android:textAlignment="center"
                 />
-           <com.github.mikephil.charting.charts.LineChart
-               android:id="@+id/bar_chart"
-               android:layout_width="match_parent"
-               android:layout_height="200dp"
-               android:layout_below="@+id/budget"
-               android:layout_marginTop="15dp">
 
-           </com.github.mikephil.charting.charts.LineChart>
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/bar_chart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@+id/budget"
+                android:layout_marginTop="15dp">
+
+            </com.github.mikephil.charting.charts.BarChart>
 
 <RelativeLayout
     android:id="@+id/buttons_group"
@@ -72,7 +73,7 @@
                 android:id="@+id/expense_button"
                 android:layout_width="300dp"
                 android:layout_height="match_parent"
-                android:text="Raport expenditure"
+                android:text="Add expense"
                 android:layout_below="@+id/scan_button"
                 android:background="@drawable/rounded_shape"
                 android:layout_marginTop="10dp"
@@ -82,7 +83,7 @@
                 android:id="@+id/income_button"
                 android:layout_width="300dp"
                 android:layout_height="match_parent"
-                android:text="Raport income"
+                android:text="Add income"
                 android:layout_below="@+id/expense_button"
                 android:background="@drawable/rounded_shape"
                 android:layout_marginTop="10dp"

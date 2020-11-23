@@ -3,6 +3,9 @@ package com.example.pati.retrofitappintro.model;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+
+import java.util.Date;
 
 import lombok.Data;
 
@@ -12,15 +15,16 @@ import lombok.Data;
 
 @Data
 @Entity
+@TypeConverters(DateConverter.class)
 public class Transaction {
 
     @PrimaryKey(autoGenerate = true)
     private long transactionId;
     private double value;
-    private Long dateOfTransaction;
+    private String dateOfTransaction;
     private long categoryId;
 
-    public Transaction( double value, Long dateOfTransaction, long categoryId) {
+    public Transaction( double value, String dateOfTransaction, long categoryId) {
         this.value = value;
         this.dateOfTransaction = dateOfTransaction;
         this.categoryId = categoryId;
@@ -42,11 +46,11 @@ public class Transaction {
         this.value = value;
     }
 
-    public Long getDateOfTransaction() {
+    public String getDateOfTransaction() {
         return dateOfTransaction;
     }
 
-    public void setDateOfTransaction(Long dateOfTransaction) {
+    public void setDateOfTransaction(String dateOfTransaction) {
         this.dateOfTransaction = dateOfTransaction;
     }
 

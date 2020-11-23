@@ -59,10 +59,10 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         TransactionDto transaction = transactionList.get(position);
 
         Calendar calendar = TimeHelper.getNow();
-        calendar.setTimeInMillis(transaction.getDateOfTransaction());
-        String dateOfTransaction = calendar.get(Calendar.DAY_OF_MONTH) + "-" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR);
+//        calendar.setTimeInMillis(transaction.getDateOfTransaction());
+//        String dateOfTransaction = calendar.get(Calendar.DAY_OF_MONTH) + "-" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR);
         holder.textViewValue.setText(String.valueOf(transaction.getValue()));
-        holder.textViewDate.setText(dateOfTransaction);
+        holder.textViewDate.setText(transaction.getDateOfTransaction().toString());
          holder.textViewCategory.setText(transaction.getCategoryName());
     }
 

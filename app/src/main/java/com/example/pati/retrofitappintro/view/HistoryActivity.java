@@ -3,14 +3,13 @@ package com.example.pati.retrofitappintro.view;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.pati.retrofitappintro.R;
 import com.example.pati.retrofitappintro.converter.TransactionDsToTransactionDtoConverter;
@@ -19,7 +18,6 @@ import com.example.pati.retrofitappintro.model.TransactionDto;
 import com.example.pati.retrofitappintro.service.TransactionService;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -36,7 +34,7 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
         RecyclerView.ItemDecoration itemDecoration = new
                 DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(itemDecoration);
@@ -59,7 +57,7 @@ public class HistoryActivity extends AppCompatActivity {
                 @SneakyThrows
                 @Override
                 public void onChanged(@Nullable List<Transaction> transactions) {
-                   Collections.reverse(transactions);
+//                   Collections.reverse(transactions);
 
                     customAdapter.setData(converter.convertDsToDtos(transactions));
                 }
